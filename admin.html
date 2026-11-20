@@ -1,0 +1,2136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Admin - PT Hartadinata Abadi Tbk</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background-color: #f4efea; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; transition: background 0.3s, color 0.3s; }
+    .navbar { background-color: #2b2b2b; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .card-stat { border: none; border-radius: 8px; transition: transform 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .table-card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: none; }
+    .table th { background-color: #2b2b2b; color: #ffffff; border: none; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .table td { vertical-align: middle !important; font-size: 14px; color: #333333; }
+    .badge-status { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 12px; }
+    .nav-tabs .nav-link { border: none; color: #6c757d; font-weight: 600; padding: 8px 15px; border-radius: 6px 6px 0 0; margin-right: 4px; font-size: 13px; }
+    .nav-tabs .nav-link.active { background-color: #2b2b2b; color: #ffffff; }
+    .login-container { max-width: 400px; margin: 80px auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    .detail-table th { background-color: #f8f9fa !important; color: #333 !important; width: 38%; font-size: 12px !important; text-transform: none !important; font-weight: 600; }
+    .detail-table td { font-size: 13px !important; color: #222 !important; word-break: break-word; }
+    body.dark-mode { background-color: #242424; color: #f4efea; }
+    body.dark-mode .table-card, body.dark-mode .card-stat, body.dark-mode .login-container, body.dark-mode .modal-content { background-color: #333333; color: #f4efea; }
+    body.dark-mode .table td { color: #e2dacf; }
+    body.dark-mode .detail-table th { background-color: #2b2b2b !important; color: #f4efea !important; }
+    body.dark-mode .detail-table td { color: #f4efea !important; }
+    body.corporate-mode { background-color: #f4efea; color: #2b2b2b; }
+    body.corporate-mode .navbar { background-color: #2b2b2b; }
+    .preview-media { max-width: 100%; max-height: 280px; border-radius: 8px; border: 1px solid rgba(199, 164, 68, 0.42); margin-top: 6px; }
+    video.preview-media { background: #2b2b2b; }
+
+    /* Professional corporate admin interface */
+    :root {
+      --hta-charcoal: #2b2b2b;
+      --hta-charcoal-dark: #242424;
+      --hta-gold: #c7a444;
+      --hta-gold-dark: #806128;
+      --hta-ivory: #f4efea;
+      --hta-white: #ffffff;
+      --hta-navy: var(--hta-charcoal);
+      --hta-navy-dark: var(--hta-charcoal-dark);
+      --hta-blue: var(--hta-gold);
+      --hta-border: #e6dfcf;
+    }
+
+    body {
+      background: var(--hta-ivory);
+      color: var(--hta-charcoal);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .navbar {
+      min-height: 64px;
+      background: var(--hta-navy) !important;
+      border-bottom: 4px solid var(--hta-gold);
+      box-shadow: 0 4px 16px rgba(16, 40, 61, 0.16);
+    }
+
+    .navbar-brand {
+      letter-spacing: 0.2px;
+      font-size: 16px !important;
+    }
+
+    .navbar .nav-link {
+      border-radius: 5px;
+      margin: 0 2px;
+    }
+
+    .navbar .nav-item.active .nav-link,
+    .navbar .nav-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .login-container {
+      max-width: 440px;
+      margin: 64px auto;
+      border: 1px solid var(--hta-border);
+      border-top: 5px solid var(--hta-navy);
+      border-radius: 8px;
+      box-shadow: 0 16px 40px rgba(16, 40, 61, 0.12);
+    }
+
+    .login-container h4 {
+      color: var(--hta-navy) !important;
+    }
+
+    .card-stat {
+      min-height: 96px;
+      border: 1px solid var(--hta-border) !important;
+      border-left: 4px solid var(--hta-blue) !important;
+      border-radius: 7px !important;
+      box-shadow: 0 5px 16px rgba(16, 40, 61, 0.06);
+    }
+
+    .card-stat h4 {
+      color: var(--hta-navy) !important;
+    }
+
+    .table-card {
+      border: 1px solid var(--hta-border) !important;
+      border-radius: 7px !important;
+      box-shadow: 0 5px 18px rgba(16, 40, 61, 0.055);
+    }
+
+    .table {
+      margin-bottom: 0;
+    }
+
+    .table th {
+      background: var(--hta-navy) !important;
+      border-color: #31516d !important;
+      font-size: 11px;
+      letter-spacing: 0.35px;
+      white-space: nowrap;
+    }
+
+    .table td {
+      border-color: #edf1f4;
+      color: #405467;
+    }
+
+    .table-hover tbody tr:hover {
+      background: #f5f8fa;
+    }
+
+    .nav-tabs {
+      border-bottom: 1px solid var(--hta-border) !important;
+    }
+
+    .nav-tabs .nav-link {
+      color: #60758a;
+      border: 1px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--hta-navy) !important;
+      background: #ffffff !important;
+      border-color: var(--hta-border) var(--hta-border) #ffffff;
+      border-bottom: 3px solid var(--hta-gold);
+    }
+
+    .form-control {
+      border-color: #cbd7e0;
+      border-radius: 5px;
+      color: #263948;
+    }
+
+    .form-control:focus {
+      border-color: var(--hta-blue);
+      box-shadow: 0 0 0 3px rgba(36, 91, 133, 0.12);
+    }
+
+    .btn-primary,
+    .modal-header.bg-primary {
+      background: var(--hta-navy) !important;
+      border-color: var(--hta-navy) !important;
+    }
+
+    .btn-success {
+      background: #31755a;
+      border-color: #31755a;
+    }
+
+    .btn-outline-light {
+      border-color: rgba(255, 255, 255, 0.55) !important;
+    }
+
+    .modal-content {
+      border: 0;
+      border-radius: 8px;
+      box-shadow: 0 18px 48px rgba(16, 40, 61, 0.22);
+    }
+
+    .modal-header {
+      border-bottom: 0;
+    }
+
+    .modal-header.bg-info {
+      background: var(--hta-blue) !important;
+    }
+
+    .detail-table th {
+      background: #f2f5f7 !important;
+      color: var(--hta-navy) !important;
+    }
+
+    .badge-status {
+      border: 1px solid rgba(16, 40, 61, 0.08);
+    }
+
+    .list-group-item {
+      border-color: #edf1f4;
+      color: #4a6073;
+    }
+
+    .list-group-item.active {
+      background: var(--hta-navy);
+      border-color: var(--hta-navy);
+    }
+
+    @media (max-width: 768px) {
+      .navbar { min-height: 56px; }
+      .login-container { margin: 28px auto; padding: 22px 18px; }
+      #konten-dashboard-utama,
+      #konten-menu-lanjutan { padding-left: 10px !important; padding-right: 10px !important; }
+      .table-card { padding: 12px !important; }
+    }
+
+    body {
+      background: var(--hta-ivory) !important;
+      color: var(--hta-charcoal) !important;
+    }
+
+    body.dark-mode {
+      background: var(--hta-charcoal-dark) !important;
+      color: var(--hta-ivory) !important;
+    }
+
+    body.corporate-mode {
+      background: var(--hta-ivory) !important;
+      color: var(--hta-charcoal) !important;
+    }
+
+    .navbar {
+      background: var(--hta-charcoal) !important;
+      border-bottom: 3px solid var(--hta-gold) !important;
+      box-shadow: 0 6px 20px rgba(43, 43, 43, 0.14) !important;
+    }
+
+    .navbar-brand,
+    .navbar .navbar-nav .nav-link {
+      color: var(--hta-ivory) !important;
+    }
+
+    .navbar .navbar-nav .nav-item.active .nav-link,
+    .navbar .navbar-nav .nav-link:hover,
+    .navbar .navbar-nav .nav-link:focus {
+      color: var(--hta-gold) !important;
+      background: rgba(199, 164, 68, 0.12);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(199, 164, 68, 0.55) !important;
+    }
+
+    .login-container,
+    .table-card,
+    .card-stat,
+    .modal-content {
+      background: var(--hta-white) !important;
+      border-color: rgba(199, 164, 68, 0.28) !important;
+      box-shadow: 0 10px 28px rgba(43, 43, 43, 0.08) !important;
+    }
+
+    .login-container {
+      border-top: 4px solid var(--hta-gold) !important;
+      border-radius: 12px !important;
+    }
+
+    .login-container h4,
+    .card-stat h4 {
+      color: var(--hta-charcoal) !important;
+    }
+
+    .login-container h4 i,
+    .table-card h5 i,
+    .table-card h6 i {
+      color: var(--hta-gold-dark);
+    }
+
+    #section-login .login-container .text-center > .mb-3 {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-gold) !important;
+      box-shadow: 0 8px 20px rgba(199, 164, 68, 0.22);
+    }
+
+    .card-stat {
+      border-left: 4px solid var(--hta-gold) !important;
+      border-radius: 10px !important;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card-stat:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(43, 43, 43, 0.12) !important;
+    }
+
+    .table-card {
+      border-radius: 10px !important;
+    }
+
+    .table th {
+      color: var(--hta-ivory) !important;
+      background: var(--hta-charcoal) !important;
+      border-color: rgba(199, 164, 68, 0.35) !important;
+    }
+
+    .table td {
+      color: var(--hta-charcoal);
+      border-color: #e9e3d8;
+    }
+
+    .table-hover tbody tr:hover {
+      background: rgba(199, 164, 68, 0.09);
+    }
+
+    .table-bordered,
+    .table-bordered td,
+    .table-bordered th {
+      border-color: #e6dfcf !important;
+    }
+
+    .detail-table th {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-ivory) !important;
+    }
+
+    .detail-table td {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-white);
+    }
+
+    .nav-tabs {
+      border-bottom-color: #e2d8c3 !important;
+    }
+
+    .nav-tabs .nav-link {
+      color: #71695d;
+    }
+
+    .nav-tabs .nav-link.active {
+      color: var(--hta-charcoal) !important;
+      border-bottom-color: var(--hta-gold) !important;
+    }
+
+    .form-control {
+      color: var(--hta-charcoal);
+      background: var(--hta-white);
+      border-color: #d9cfba;
+      border-radius: 6px;
+    }
+
+    .form-control:focus {
+      border-color: var(--hta-gold);
+      box-shadow: 0 0 0 3px rgba(199, 164, 68, 0.18);
+    }
+
+    .btn-primary,
+    .btn-success,
+    .btn-info {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-gold) !important;
+      border-color: var(--hta-gold) !important;
+    }
+
+    .btn-primary:hover,
+    .btn-success:hover,
+    .btn-info:hover {
+      color: var(--hta-charcoal) !important;
+      background: #d6b653 !important;
+      border-color: #d6b653 !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-warning {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-gold) !important;
+      border-color: var(--hta-gold) !important;
+    }
+
+    .btn-outline-primary {
+      color: var(--hta-gold-dark) !important;
+      border-color: var(--hta-gold) !important;
+    }
+
+    .btn-outline-primary:hover {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-gold) !important;
+    }
+
+    .btn-secondary {
+      color: var(--hta-ivory) !important;
+      background: var(--hta-charcoal) !important;
+      border-color: var(--hta-charcoal) !important;
+    }
+
+    .btn-outline-secondary {
+      color: var(--hta-charcoal) !important;
+      border-color: #c8bfae !important;
+    }
+
+    .btn-outline-secondary:hover {
+      color: var(--hta-charcoal) !important;
+      background: var(--hta-ivory) !important;
+      border-color: var(--hta-gold) !important;
+    }
+
+    .btn-danger {
+      background: #a74437;
+      border-color: #a74437;
+    }
+
+    .text-primary,
+    .text-info,
+    .text-warning {
+      color: var(--hta-gold-dark) !important;
+    }
+
+    .text-muted {
+      color: #756d5f !important;
+    }
+
+    .alert-info {
+      color: var(--hta-charcoal) !important;
+      background: #fbf7ed !important;
+      border-color: rgba(199, 164, 68, 0.4) !important;
+    }
+
+    .badge-primary {
+      color: var(--hta-ivory);
+      background: var(--hta-charcoal);
+    }
+
+    .badge-info,
+    .badge-warning {
+      color: var(--hta-charcoal);
+      background: var(--hta-gold);
+    }
+
+    .list-group-item {
+      color: var(--hta-charcoal);
+      background: var(--hta-white);
+      border-color: #e9e3d8;
+    }
+
+    .list-group-item.active {
+      color: var(--hta-ivory);
+      background: var(--hta-charcoal);
+      border-color: var(--hta-gold);
+      box-shadow: inset 3px 0 0 var(--hta-gold);
+    }
+
+    .modal-content {
+      border-radius: 12px !important;
+      overflow: hidden;
+    }
+
+    .modal-header.bg-primary {
+      color: var(--hta-ivory);
+      background: var(--hta-charcoal) !important;
+    }
+
+    .modal-header.bg-info {
+      color: var(--hta-charcoal);
+      background: var(--hta-gold) !important;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--hta-gold) !important;
+      outline-offset: 2px;
+    }
+
+    body.dark-mode .login-container,
+    body.dark-mode .table-card,
+    body.dark-mode .card-stat,
+    body.dark-mode .modal-content,
+    body.dark-mode .card.bg-light {
+      color: var(--hta-ivory) !important;
+      background: #333333 !important;
+      border-color: rgba(199, 164, 68, 0.35) !important;
+    }
+
+    body.dark-mode .table,
+    body.dark-mode .table td,
+    body.dark-mode .list-group-item {
+      color: var(--hta-ivory);
+      background: #333333;
+    }
+
+    body.dark-mode .table th,
+    body.dark-mode .detail-table th {
+      color: var(--hta-ivory) !important;
+      background: var(--hta-charcoal-dark) !important;
+    }
+
+    body.dark-mode .detail-table td,
+    body.dark-mode .form-control {
+      color: var(--hta-ivory) !important;
+      background: var(--hta-charcoal-dark) !important;
+      border-color: rgba(199, 164, 68, 0.4) !important;
+    }
+
+    body.dark-mode .text-muted {
+      color: #c5bdae !important;
+    }
+
+    .login-container {
+      position: relative;
+      overflow: hidden;
+      animation: adminLoginEntrance 0.65s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .login-container::before {
+      content: "";
+      position: absolute;
+      top: -92px;
+      right: -78px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(199, 164, 68, 0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .login-container > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .admin-login-logo {
+      display: block;
+      width: min(250px, 72vw);
+      height: auto;
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 5px 12px rgba(199, 164, 68, 0.16));
+      animation: adminLogoEntrance 0.7s 0.08s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+    }
+
+    #section-login .text-center > .mb-3 {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #section-login .text-center > .mb-3:hover {
+      transform: translateY(-2px) rotate(-3deg);
+      box-shadow: 0 12px 24px rgba(199, 164, 68, 0.3);
+    }
+
+    #section-login .btn {
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+    }
+
+    #section-login .btn:not(.btn-link):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(199, 164, 68, 0.18);
+    }
+
+    #section-login .btn:not(.btn-link):active {
+      transform: translateY(0);
+    }
+
+    #section-login .text-primary {
+      transition: color 0.18s ease;
+    }
+
+    #section-login a.text-primary:hover {
+      color: var(--hta-gold) !important;
+    }
+
+    .navbar-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 100%;
+      padding-top: 6px;
+      padding-bottom: 6px;
+      white-space: nowrap;
+    }
+
+    .admin-navbar-logo {
+      display: block;
+      width: clamp(132px, 16vw, 190px);
+      max-height: 28px;
+      height: auto;
+      object-fit: contain;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .navbar-brand:hover .admin-navbar-logo {
+      transform: translateY(-1px);
+      filter: drop-shadow(0 3px 8px rgba(199, 164, 68, 0.25));
+    }
+
+    .admin-navbar-divider {
+      width: 1px;
+      height: 23px;
+      flex: 0 0 1px;
+      background: rgba(199, 164, 68, 0.58);
+    }
+
+    .admin-navbar-title {
+      color: var(--hta-ivory);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .navbar .nav-link,
+    .navbar .btn {
+      transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    @keyframes adminLoginEntrance {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes adminLogoEntrance {
+      from { opacity: 0; transform: translateY(8px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 575.98px) {
+      .admin-navbar-logo {
+        width: clamp(116px, 39vw, 150px);
+        max-height: 23px;
+      }
+
+      .navbar-brand {
+        gap: 8px;
+        margin-right: 8px;
+      }
+
+      .admin-navbar-title {
+        font-size: 0.61rem;
+        letter-spacing: 0.06em;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card-stat,
+      .btn-primary,
+      .btn-success,
+      .btn-info,
+      .login-container,
+      .admin-login-logo,
+      .admin-navbar-logo,
+      #section-login .btn,
+      #section-login .text-center > .mb-3 {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="section-login" class="container">
+    <div class="login-container">
+      <div class="text-center mb-4">
+        <img class="admin-login-logo" src="./assets/hartadinata-abadi-logo.png" alt="Logo PT Hartadinata Abadi Tbk" width="2125" height="268" decoding="async" onerror="this.onerror=null;this.src='https://hartadinataabadi.co.id/phpthumb/phpThumb.php?src=/_upload/hartadinataabadi.co.id/setting/companyLogo/LogoHAgold.png&amp;f=png&amp;far=C&amp;hash=68615030d222f407b617b30bcd26757c';">
+        <div class="mb-3" style="width:52px;height:52px;border-radius:50%;background:#c7a444;color:#2b2b2b;display:inline-flex;align-items:center;justify-content:center;font-size:20px;">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+        </div>
+        <h4 class="font-weight-bold" style="color: #2b2b2b;"><i class="fas fa-shield-alt mr-2"></i> Portal Admin HTA</h4>
+        <p class="text-muted small mb-0">PT Hartadinata Abadi Tbk</p>
+        <p class="text-muted small">Whistleblowing System - Sistem Verifikasi Multi-Admin</p>
+      </div>
+      <div id="form-login-step">
+        <div class="form-group">
+          <label class="small font-weight-bold">Email Admin (@gmail.com):</label>
+          <input type="email" id="login-email" class="form-control" value="dwiadewi45@gmail.com" placeholder="Masukkan email admin terdaftar...">
+        </div>
+        <div class="form-group"><label class="small font-weight-bold">Password Admin:</label><input type="password" id="login-password" class="form-control" placeholder="Masukkan password admin..."></div>
+        <button class="btn btn-primary btn-block font-weight-bold py-2 mt-3" onclick="kirimOtpAdmin()"><i class="fas fa-paper-plane mr-1"></i> Kirim Kode OTP ke Email</button>
+        <div class="text-center mt-3"><a href="#" onclick="tampilkanFormLupaPassword()" class="small text-primary font-weight-bold">Lupa Password?</a></div>
+      </div>
+      <div id="form-otp-step" style="display: none;">
+        <div class="alert alert-info small text-center">Kode verifikasi 6-digit telah dikirim ke email <b id="label-otp-admin-email">dwiadewi45@gmail.com</b>.</div>
+        <div class="form-group"><label class="small font-weight-bold">Masukkan Kode OTP:</label><input type="text" id="input-otp" class="form-control text-center font-weight-bold" maxlength="6" placeholder="______" style="letter-spacing: 5px; font-size: 20px;"></div>
+        <button class="btn btn-success btn-block font-weight-bold py-2 mt-3" onclick="verifikasiOtpAdmin()"><i class="fas fa-check-circle mr-1"></i> Verifikasi & Masuk</button>
+        <button class="btn btn-link btn-block text-muted small mt-2" onclick="resetLoginStep()">Kembali / Kirim Ulang</button>
+      </div>
+      <div id="form-lupa-password-step" style="display: none;">
+        <div class="text-center mb-3"><h6 class="font-weight-bold text-danger">Reset Password Admin</h6><p class="text-muted small">Masukkan email admin Anda untuk menerima kode verifikasi reset.</p></div>
+        <div class="form-group"><label class="small font-weight-bold">Email Admin (@gmail.com):</label><input type="email" id="lupa-email" class="form-control" value="dwiadewi45@gmail.com" placeholder="namaadmin@gmail.com"></div>
+        <div id="wrapper-kode-reset" style="display: none;">
+          <div class="form-group"><label class="small font-weight-bold">Kode Verifikasi Reset:</label><input type="text" id="input-reset-otp" class="form-control text-center font-weight-bold" maxlength="6" placeholder="______" style="letter-spacing: 5px; font-size: 18px;"></div>
+          <div class="form-group"><label class="small font-weight-bold">Password Baru:</label><input type="password" id="input-password-baru" class="form-control" placeholder="Masukkan password baru..."></div>
+        </div>
+        <button id="btn-proses-lupa" class="btn btn-danger btn-block font-weight-bold py-2 mt-3" onclick="kirimKodeResetPassword()">Kirim Kode Verifikasi</button>
+        <button class="btn btn-link btn-block text-muted small mt-2" onclick="resetLoginStep()">Kembali ke Login</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="section-dashboard" style="display: none;">
+    <nav class="navbar navbar-dark px-3 py-2 navbar-expand-lg">
+      <a class="navbar-brand font-weight-bold" href="#" aria-label="PT Hartadinata Abadi Tbk - Portal Admin">
+        <img class="admin-navbar-logo" src="./assets/hartadinata-abadi-logo.png" alt="PT Hartadinata Abadi Tbk" width="2125" height="268" decoding="async" onerror="this.onerror=null;this.src='https://hartadinataabadi.co.id/phpthumb/phpThumb.php?src=/_upload/hartadinataabadi.co.id/setting/companyLogo/LogoHAgold.png&amp;f=png&amp;far=C&amp;hash=68615030d222f407b617b30bcd26757c';">
+        <span class="admin-navbar-divider" aria-hidden="true"></span>
+        <span class="admin-navbar-title">Portal Admin</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNavbarContent"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="adminNavbarContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active" id="nav-item-dashboard"><a class="nav-link text-white small" href="#" onclick="tampilkanKontenUtama()"><i class="fas fa-home mr-1"></i> Dashboard</a></li>
+          <li class="nav-item" id="nav-item-lanjutan"><a class="nav-link text-white small" href="#" onclick="bukaMenuLanjutan()"><i class="fas fa-tools mr-1"></i> Setting</a></li>
+        </ul>
+        <div class="text-white small d-flex align-items-center" style="font-size: 11px;">
+          <span class="mr-3"><i class="fas fa-user-shield mr-1"></i> <span id="navbar-admin-email">dwiadewi45@gmail.com</span></span>
+          <button class="btn btn-sm btn-outline-light py-0 px-2" onclick="prosesLogout()" style="font-size: 11px;">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid px-2 px-md-4 mt-3" id="konten-dashboard-utama">
+      <div class="row mb-3">
+        <div class="col-6 col-md-3 mb-2"><div class="card card-stat bg-white p-2 px-3 border-left border-primary border-4"><div class="text-muted font-weight-bold" style="font-size: 10px; text-transform: uppercase;">Total Laporan</div><h4 class="font-weight-bold mt-1 mb-0 text-primary" id="stat-total">0</h4></div></div>
+        <div class="col-6 col-md-3 mb-2"><div class="card card-stat bg-white p-2 px-3 border-left border-warning border-4"><div class="text-muted font-weight-bold" style="font-size: 10px; text-transform: uppercase;">Menunggu</div><h4 class="font-weight-bold mt-1 mb-0 text-warning" id="stat-menunggu">0</h4></div></div>
+        <div class="col-6 col-md-3 mb-2"><div class="card card-stat bg-white p-2 px-3 border-left border-info border-4"><div class="text-muted font-weight-bold" style="font-size: 10px; text-transform: uppercase;">Diproses</div><h4 class="font-weight-bold mt-1 mb-0 text-info" id="stat-proses">0</h4></div></div>
+        <div class="col-6 col-md-3 mb-2"><div class="card card-stat bg-white p-2 px-3 border-left border-success border-4"><div class="text-muted font-weight-bold" style="font-size: 10px; text-transform: uppercase;">Selesai</div><h4 class="font-weight-bold mt-1 mb-0 text-success" id="stat-selesai">0</h4></div></div>
+      </div>
+
+      <div class="card table-card mb-3 p-3">
+        <div class="row align-items-center">
+          <div class="col-12 col-md-10 mb-2 mb-md-0">
+            <div class="d-flex flex-wrap gap-2 align-items-end">
+              <div class="mr-2 mb-2 mb-md-0">
+                <label for="filterJenis" class="small font-weight-bold text-muted d-block mb-1">Filter Jenis:</label>
+                <select id="filterJenis" class="form-control form-control-sm" onchange="ubahOpsiFilterKategori(); terapkanFilter();">
+                  <option value="">Semua Jenis</option>
+                  <option value="Keluhan">Keluhan</option>
+                  <option value="Pelanggaran">Pelanggaran</option>
+                </select>
+              </div>
+              <div class="mr-2 mb-2 mb-md-0">
+                <label for="filterKategori" class="small font-weight-bold text-muted d-block mb-1">Filter Kategori:</label>
+                <select id="filterKategori" class="form-control form-control-sm" onchange="terapkanFilter()">
+                  <option value="">Semua Kategori</option>
+                </select>
+              </div>
+              <div class="mr-2 mb-2 mb-md-0">
+                <label for="filterTanggal" class="small font-weight-bold text-muted d-block mb-1">Filter Tanggal:</label>
+                <div class="input-group input-group-sm">
+                  <input type="date" id="filterTanggal" class="form-control" onchange="terapkanFilter()">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" onclick="resetFilter()" type="button" title="Reset Filter"><i class="fas fa-redo"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="CariTeks" class="small font-weight-bold text-muted d-block mb-1">Cari Tiket / Pelapor:</label>
+                <input type="text" id="CariTeks" class="form-control form-control-sm" placeholder="Ketik nama / no tiket..." onkeyup="terapkanFilter()">
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-2 text-md-right">
+            <span class="text-muted small">Ditampilkan: <strong id="count-filtered-text" class="text-dark">0</strong> data</span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="nav nav-tabs border-0 flex-nowrap overflow-auto" id="adminTabs" role="tablist" style="white-space: nowrap;">
+        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#semua" role="tab"><i class="fas fa-list mr-1"></i> Semua <span id="badge-semua" class="badge badge-light ml-1 font-weight-bold">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menunggu" role="tab"><i class="fas fa-clock mr-1"></i> Menunggu <span id="badge-menunggu" class="badge badge-light ml-1 font-weight-bold">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#proses" role="tab"><i class="fas fa-spinner mr-1"></i> Diproses <span id="badge-proses" class="badge badge-light ml-1 font-weight-bold">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#selesai" role="tab"><i class="fas fa-check-circle mr-1"></i> Selesai <span id="badge-selesai" class="badge badge-light ml-1 font-weight-bold">0</span></a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#ditolak" role="tab"><i class="fas fa-ban mr-1"></i> Ditolak <span id="badge-ditolak" class="badge badge-light ml-1 font-weight-bold">0</span></a></li>
+      </ul>
+
+      <div class="card table-card rounded-top-0">
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="semua" role="tabpanel"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>No</th><th>No. Tiket</th><th>Jenis</th><th>Pelapor</th><th>Cabang / Wilayah</th><th>Kategori</th><th>Status</th><th>Tanggal Lapor</th><th class="text-center">Aksi</th></tr></thead><tbody id="tabel-semua"><tr><td colspan="9" class="text-center py-4 text-muted">Memuat data dari server...</td></tr></tbody></table></div></div>
+          <div class="tab-pane fade" id="menunggu" role="tabpanel"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>No</th><th>No. Tiket</th><th>Jenis</th><th>Pelapor</th><th>Cabang / Wilayah</th><th>Kategori</th><th>Status</th><th>Tanggal Lapor</th><th class="text-center">Aksi</th></tr></thead><tbody id="tabel-menunggu"><tr><td colspan="9" class="text-center py-4 text-muted">Tidak ada data.</td></tr></tbody></table></div></div>
+          <div class="tab-pane fade" id="proses" role="tabpanel"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>No</th><th>No. Tiket</th><th>Jenis</th><th>Pelapor</th><th>Cabang / Wilayah</th><th>Kategori</th><th>Status</th><th>Tanggal Lapor</th><th class="text-center">Aksi</th></tr></thead><tbody id="tabel-proses"><tr><td colspan="9" class="text-center py-4 text-muted">Tidak ada data.</td></tr></tbody></table></div></div>
+          <div class="tab-pane fade" id="selesai" role="tabpanel"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>No</th><th>No. Tiket</th><th>Jenis</th><th>Pelapor</th><th>Cabang / Wilayah</th><th>Kategori</th><th>Status</th><th>Tanggal Lapor</th><th class="text-center">Aksi</th></tr></thead><tbody id="tabel-selesai"><tr><td colspan="9" class="text-center py-4 text-muted">Tidak ada data.</td></tr></tbody></table></div></div>
+          <div class="tab-pane fade" id="ditolak" role="tabpanel"><div class="table-responsive"><table class="table table-hover"><thead><tr><th>No</th><th>No. Tiket</th><th>Jenis</th><th>Pelapor</th><th>Cabang / Wilayah</th><th>Kategori</th><th>Status</th><th>Tanggal Lapor</th><th class="text-center">Aksi</th></tr></thead><tbody id="tabel-ditolak"><tr><td colspan="9" class="text-center py-4 text-muted">Tidak ada data.</td></tr></tbody></table></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid px-2 px-md-4 mt-3" id="konten-menu-lanjutan" style="display: none;">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <div class="card table-card p-3">
+            <h6 class="font-weight-bold text-primary mb-3"><i class="fas fa-cogs mr-1"></i> Kontrol Admin</h6>
+            <div class="list-group list-group-flush small font-weight-bold">
+              <button class="list-group-item list-group-item-action active" onclick="gantiSubMenu('grafik', this)"><i class="fas fa-chart-pie mr-2"></i> Grafik Interaktif</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('cabang', this)"><i class="fas fa-map-marked-alt mr-2"></i> Pemetaan Cabang Masalah</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('kelola_admins', this)"><i class="fas fa-user-shield mr-2"></i> Kelola Tim Admin (Multi-Admin)</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('kelola_users', this)"><i class="fas fa-users-cog mr-2"></i> Kelola Akun User</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('arsip', this)"><i class="fas fa-archive mr-2"></i> Pembersihan Data</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('export', this)"><i class="fas fa-file-excel mr-2"></i> Export Laporan (Excel/CSV)</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('kelola_cabang', this)"><i class="fas fa-store mr-2"></i> Kelola Lokasi Cabang</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('kategori', this)"><i class="fas fa-list-alt mr-2"></i> Kelola Kategori & Pihak Terlibat</button>
+              <button class="list-group-item list-group-item-action" onclick="gantiSubMenu('sandimenu', this)"><i class="fas fa-key mr-2"></i> Ubah / Reset Sandi Saya</button>
+              <button class="list-group-item list-group-item-action text-danger" onclick="gantiSubMenu('pemeliharaan', this)"><i class="fas fa-power-off mr-2"></i> Mode Pemeliharaan Sistem</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div id="submenu-grafik" class="card table-card p-4">
+            <h5 class="font-weight-bold mb-3"><i class="fas fa-chart-bar text-primary mr-2"></i> Grafik Statistik Laporan</h5>
+            <div class="row">
+              <div class="col-md-6 mb-3 text-center"><canvas id="chartJenis" width="100" height="80"></canvas></div>
+              <div class="col-md-6 mb-3 text-center"><canvas id="chartStatus" width="100" height="80"></canvas></div>
+            </div>
+          </div>
+
+          <div id="submenu-cabang" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3"><i class="fas fa-map-marker-alt text-danger mr-2"></i> Pemetaan Cabang & Wilayah Bermasalah</h5>
+            <div class="row align-items-end mb-3">
+              <div class="col-12 col-sm-6 col-md-4">
+                <label for="filterWilayahAnalisisCabang" class="small font-weight-bold text-muted d-block mb-1">Filter Wilayah:</label>
+                <select id="filterWilayahAnalisisCabang" class="form-control form-control-sm" onchange="analisisCabangBermasalah()">
+                  <option value="">Semua Wilayah</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-md-8 text-sm-right mt-2 mt-sm-0">
+                <small class="text-muted">Menampilkan: <strong id="count-analisis-cabang" class="text-dark">0</strong> cabang</small>
+              </div>
+            </div>
+            <div class="table-responsive"><table class="table table-bordered table-sm"><thead><tr class="bg-light"><th>Peringkat</th><th>Nama Cabang</th><th>Wilayah</th><th>Total Laporan</th><th>Tingkat Risiko</th></tr></thead><tbody id="tabel-analisis-cabang"><tr><td colspan="5" class="text-center text-muted">Menganalisis data cabang...</td></tr></tbody></table></div>
+          </div>
+
+          <div id="submenu-kelola_admins" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-primary"><i class="fas fa-user-shield mr-2"></i> Kelola Tim Admin (Multi-Admin)</h5>
+            <div class="alert alert-info small">
+              <i class="fas fa-bullhorn mr-1"></i> Setiap laporan baru yang dikirimkan pengguna akan otomatis diteruskan ke <b>seluruh alamat email admin</b> yang terdaftar pada tabel di bawah ini.
+            </div>
+            <div class="card bg-light p-3 mb-3 border">
+              <h6 class="font-weight-bold text-dark mb-2"><i class="fas fa-plus-circle text-primary mr-1"></i> Tambah Akses Admin Baru</h6>
+              <div class="row">
+                <div class="col-md-4 form-group mb-2">
+                  <label class="small font-weight-bold">Nama Admin:</label>
+                  <input type="text" id="add-admin-nama" class="form-control form-control-sm" placeholder="Contoh: Admin Cabang">
+                </div>
+                <div class="col-md-4 form-group mb-2">
+                  <label class="small font-weight-bold">Alamat Email (@gmail.com):</label>
+                  <input type="email" id="add-admin-email" class="form-control form-control-sm" placeholder="namaadmin@gmail.com">
+                </div>
+                <div class="col-md-4 form-group mb-2">
+                  <label class="small font-weight-bold">Password Login:</label>
+                  <input type="password" id="add-admin-password" class="form-control form-control-sm" placeholder="Buat password...">
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm font-weight-bold mt-1" style="width: fit-content;" onclick="tambahAdminBaru()">
+                <i class="fas fa-user-plus mr-1"></i> Tambahkan ke Daftar Admin
+              </button>
+            </div>
+
+            <h6 class="font-weight-bold mb-2">Daftar Admin Terdaftar (Penerima Broadcast Laporan)</h6>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead>
+                  <tr class="bg-light">
+                    <th>No</th>
+                    <th>Nama Admin</th>
+                    <th>Email (@gmail.com)</th>
+                    <th>Peran (Role)</th>
+                    <th>Waktu Ditambahkan</th>
+                    <th class="text-center" style="width: 170px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-daftar-admins">
+                  <tr><td colspan="6" class="text-center text-muted">Memuat daftar admin...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="submenu-kelola_users" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-primary"><i class="fas fa-users-cog mr-2"></i> Pengaturan Relay OTP Email Admin & Daftar Akun User</h5>
+            <div class="alert alert-info small">
+              <b>Skema 1 (Otomatis 24 Jam Gratis):</b> Tempelkan URL Web App <i>Google Apps Script</i> di bawah ini agar sistem otomatis mengirimkan kode OTP dari email Admin ke alamat <code>@gmail.com</code> pengguna.
+            </div>
+            <div class="form-group">
+              <label class="small font-weight-bold">URL Web App Google Apps Script (Pengirim OTP Email Admin):</label>
+              <div class="input-group input-group-sm">
+                <input type="text" id="input-gas-url" class="form-control" placeholder="https://script.google.com/macros/s/xxxxxx/exec">
+                <div class="input-group-append">
+                  <button class="btn btn-primary font-weight-bold" onclick="simpanGasUrl()"><i class="fas fa-save mr-1"></i> Simpan URL Relay</button>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="font-weight-bold mb-0">Daftar Pengguna Terverifikasi (@gmail.com)</h6>
+              <small class="text-muted"><i class="fas fa-info-circle"></i> Klik <b>Kelola</b> jika pengguna lupa kode/key Authenticator atau lupa sandi</small>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead>
+                  <tr class="bg-light">
+                    <th>No</th>
+                    <th>Nama Lengkap</th>
+                    <th>Email (@gmail.com)</th>
+                    <th>No. Telepon / WA</th>
+                    <th>2FA / Key Authenticator</th>
+                    <th>Verifikasi Email Login</th>
+                    <th>Waktu Terdaftar</th>
+                    <th class="text-center" style="width: 150px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-daftar-users">
+                  <tr><td colspan="8" class="text-center text-muted">Memuat data pengguna...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="submenu-arsip" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3"><i class="fas fa-archive text-warning mr-2"></i> Arsip Tiket & Pembersihan Database</h5>
+            <div class="alert alert-danger small"><i class="fas fa-exclamation-triangle mr-1"></i> <b>Perhatian:</b> Tindakan ini akan menghapus data laporan secara permanen langsung dari database Cloudflare D1 dan tidak dapat dikembalikan.</div>
+            <div class="form-group">
+              <label class="small font-weight-bold">Pilih Kategori Pembersihan:</label>
+              <select id="opsi-pembersihan" class="form-control form-control-sm mb-3">
+                <option value="selesai">Hapus Semua Laporan Berstatus "Selesai"</option>
+                <option value="ditolak">Hapus Semua Laporan Berstatus "Ditolak"</option>
+                <option value="semua">Hapus Seluruh Data Laporan (Reset Total Database)</option>
+              </select>
+              <button id="btn-hapus-arsip" class="btn btn-danger btn-sm font-weight-bold px-3" onclick="jalankanPembersihanData()">
+                <i class="fas fa-trash-alt mr-1"></i> Jalankan Pembersihan Database
+              </button>
+            </div>
+          </div>
+
+          <div id="submenu-export" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3"><i class="fas fa-file-excel text-success mr-2"></i> Export Data Laporan (Excel / CSV)</h5>
+            <button class="btn btn-success btn-sm font-weight-bold px-4 py-2" onclick="exportKeExcelCSV()"><i class="fas fa-download mr-2"></i> Unduh File Rekap Lengkap (CSV)</button>
+          </div>
+
+          <div id="submenu-kelola_cabang" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-primary"><i class="fas fa-store mr-2"></i> Kelola Daftar Lokasi Cabang & Wilayah</h5>
+            <p class="text-muted small">Tambah, edit, atau hapus lokasi cabang dengan mudah menggunakan tabel di bawah ini.</p>
+
+            <div class="row align-items-end mb-3">
+              <div class="col-12 col-sm-6 col-md-4">
+                <label for="filterWilayahCabang" class="small font-weight-bold text-muted d-block mb-1">Filter Berdasarkan Wilayah:</label>
+                <select id="filterWilayahCabang" class="form-control form-control-sm" onchange="renderTabelKelolaCabang()">
+                  <option value="">Semua Wilayah</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-6 col-md-8 text-sm-right mt-2 mt-sm-0">
+                <small class="text-muted">Menampilkan: <strong id="count-cabang-filtered" class="text-dark">0</strong> cabang</small>
+              </div>
+            </div>
+            
+            <div class="table-responsive mb-3">
+              <table class="table table-bordered table-sm" id="tabel-kelola-cabang">
+                <thead>
+                  <tr class="bg-light">
+                    <th>Nama Cabang / Toko</th>
+                    <th>Wilayah</th>
+                    <th>Alamat Lengkap</th>
+                    <th class="text-center" style="width: 80px;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-kelola-cabang"></tbody>
+              </table>
+            </div>
+            
+            <button class="btn btn-secondary btn-sm font-weight-bold mr-2" onclick="tambahBarisCabang()"><i class="fas fa-plus mr-1"></i> Tambah Cabang Baru</button>
+            <button class="btn btn-primary btn-sm font-weight-bold px-4" onclick="simpanCabangBaru()"><i class="fas fa-save mr-1"></i> Simpan Perubahan Cabang</button>
+          </div>
+
+          <div id="submenu-kategori" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-primary"><i class="fas fa-list-alt mr-2"></i> Kelola Kategori, Status Pelapor & Pihak Terlibat</h5>
+            <p class="text-muted small">Ubah pilihan kategori pada form keluhan, pelanggaran, pilihan Status Pelapor, serta Kategori Jabatan Pihak Terlibat secara real-time. Pisahkan setiap pilihan dengan tanda koma (<b>,</b>).</p>
+            
+            <div class="form-group">
+              <label class="small font-weight-bold">1. Kategori Layanan Keluhan:</label>
+              <textarea id="input-kategori-keluhan" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="small font-weight-bold">2. Kategori Laporan Pelanggaran:</label>
+              <textarea id="input-kategori-pelanggaran" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="small font-weight-bold text-info"><i class="fas fa-user-tag mr-1"></i> 3. Pilihan Status Pelapor (Form Pelanggaran):</label>
+              <textarea id="input-status-pelapor" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="small font-weight-bold text-danger"><i class="fas fa-users mr-1"></i> 4. Pilihan Kategori / Jabatan Pihak yang Terlibat (Form Pelanggaran):</label>
+              <textarea id="input-pihak-terlibat" class="form-control form-control-sm" rows="2"></textarea>
+            </div>
+
+            <button class="btn btn-primary btn-sm font-weight-bold px-4" onclick="simpanKategoriBaru()">
+              <i class="fas fa-save mr-1"></i> Simpan Semua Perubahan Kategori
+            </button>
+          </div>
+
+          <div id="submenu-sandimenu" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-primary"><i class="fas fa-key mr-2"></i> Ubah / Reset Sandi Saya</h5>
+            <p class="text-muted small">Gunakan verifikasi OTP ke email admin Anda yang sedang aktif untuk menetapkan password baru.</p>
+            <div id="step-minta-otp-sandi">
+              <div class="form-group"><label class="small font-weight-bold">Email Admin Aktif:</label><input type="email" id="sandimenu-email-aktif" class="form-control form-control-sm mb-3" value="dwiadewi45@gmail.com" readonly></div>
+              <button class="btn btn-warning btn-sm font-weight-bold px-4 text-dark" onclick="mintaOtpResetSandiMenu()"><i class="fas fa-paper-plane mr-1"></i> Kirim Kode OTP Pemulihan</button>
+            </div>
+            <div id="step-input-sandi-baru" style="display: none;">
+              <div class="alert alert-info small">Kode OTP telah dikirim ke email admin Anda. Masukkan kode dan password baru di bawah ini:</div>
+              <div class="form-group"><label class="small font-weight-bold">Kode OTP 6-Digit:</label><input type="text" id="input-otp-sandi" class="form-control form-control-sm text-center font-weight-bold mb-2" maxlength="6" placeholder="______" style="letter-spacing: 3px;"></div>
+              <div class="form-group"><label class="small font-weight-bold">Password Baru:</label><input type="password" id="input-sandi-baru-menu" class="form-control form-control-sm mb-2" placeholder="Masukkan password baru..."></div>
+              <button class="btn btn-success btn-sm font-weight-bold px-4" onclick="simpanSandiBaruMenu()"><i class="fas fa-check-circle mr-1"></i> Simpan Password Baru</button>
+              <button class="btn btn-link btn-sm text-muted ml-2" onclick="resetFormSandiMenu()">Batal</button>
+            </div>
+          </div>
+
+          <div id="submenu-pemeliharaan" class="card table-card p-4" style="display: none;">
+            <h5 class="font-weight-bold mb-3 text-danger"><i class="fas fa-power-off mr-2"></i> Mode Pemeliharaan Sistem (Maintenance)</h5>
+            <p class="text-muted small">Aktifkan sakelar ini untuk menutup sementara portal pelaporan utama bagi pengguna secara real-time.</p>
+            <div class="custom-control custom-switch mb-3">
+              <input type="checkbox" class="custom-control-input" id="sakelarMaintenance" onchange="ubahStatusMaintenance(this)">
+              <label class="custom-control-label font-weight-bold" for="sakelarMaintenance">Status Portal: <span id="teks-status-maintenance" class="text-success">Aktif & Normal</span></label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title font-weight-bold" style="font-size: 16px;"><i class="fas fa-database mr-2"></i> Detail Lengkap Data Laporan & Update Status</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body p-3">
+          <input type="hidden" id="modal-kode-tiket">
+          
+          <h6 class="font-weight-bold text-primary mb-2"><i class="fas fa-table mr-1"></i> Rincian Seluruh Data Form (Database View)</h6>
+          <div class="table-responsive mb-3">
+            <table class="table table-bordered table-sm detail-table mb-0" id="tabel-detail-lengkap"></table>
+          </div>
+
+          <hr>
+
+          <h6 class="font-weight-bold text-primary mb-2"><i class="fas fa-edit mr-1"></i> Tindakan & Pembaruan Status</h6>
+          <div class="form-group mb-2">
+            <label for="pilih-status" class="small text-muted font-weight-bold">Status Laporan:</label>
+            <select id="pilih-status" class="form-control form-control-sm" onchange="ubahStatusOtomatisCatatan()">
+              <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+              <option value="Sedang Diproses">Sedang Diproses</option>
+              <option value="Selesai">Selesai</option>
+              <option value="Ditolak">Ditolak</option>
+            </select>
+          </div>
+          <div class="form-group mb-0">
+            <label for="catatan-admin" class="small text-muted font-weight-bold">Catatan / Tindak Lanjut Admin:</label>
+            <textarea id="catatan-admin" class="form-control form-control-sm" rows="3" placeholder="Masukkan keterangan tindak lanjut..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light px-3 py-2 d-flex justify-content-between">
+          <button type="button" class="btn btn-danger btn-sm px-3 font-weight-bold" onclick="hapusTiketSatuan()"><i class="fas fa-trash-alt mr-1"></i> Hapus Permanen</button>
+          <div>
+            <button type="button" class="btn btn-secondary btn-sm px-3" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary btn-sm px-3 font-weight-bold" onclick="simpanPerubahanStatus()"><i class="fas fa-save mr-1"></i> Simpan Status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-info text-white">
+          <h5 class="modal-title font-weight-bold" style="font-size: 16px;"><i class="fas fa-user-shield mr-2"></i> Kelola Akun, 2FA &amp; Bypass Login Pengguna</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body p-3">
+          <input type="hidden" id="edit-user-id">
+          <div class="form-group mb-2">
+            <label class="small font-weight-bold text-muted">Nama Pengguna:</label>
+            <input type="text" id="edit-user-nama" class="form-control form-control-sm" readonly>
+          </div>
+          <div class="form-group mb-3">
+            <label class="small font-weight-bold text-muted">Alamat Email (@gmail.com):</label>
+            <input type="email" id="edit-user-email" class="form-control form-control-sm" readonly>
+          </div>
+          <div class="form-group mb-3">
+            <label class="small font-weight-bold text-primary"><i class="fas fa-key mr-1"></i> Ubah Sandi Pengguna (Opsional):</label>
+            <input type="password" id="edit-user-password" class="form-control form-control-sm" placeholder="Kosongkan jika tidak ingin mengubah sandi...">
+            <small class="text-muted">Ketik sandi baru jika pengguna lupa password.</small>
+          </div>
+          <hr>
+          <div class="form-group mb-3 bg-light p-3 rounded border">
+            <div class="custom-control custom-switch mb-2">
+              <input type="checkbox" class="custom-control-input" id="edit-user-2fa" onchange="toggleAdmin2faControls()">
+              <label class="custom-control-label font-weight-bold text-primary" for="edit-user-2fa">
+                Verifikasi 2 Langkah Authenticator (2FA)
+              </label>
+            </div>
+            <div class="form-group mb-2">
+              <label class="small font-weight-bold text-dark">Kunci (Secret Key) Authenticator Pengguna:</label>
+              <div class="input-group input-group-sm">
+                <input type="text" id="edit-user-2fa-secret" class="form-control font-weight-bold" readonly placeholder="Tidak ada kunci 2FA tersimpan">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary" onclick="salinSecret2faAdmin()" title="Salin Kunci"><i class="fas fa-copy"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label class="small font-weight-bold text-dark">Kode Authenticator 6-Digit Aktif Saat Ini:</label>
+              <div class="input-group input-group-sm">
+                <input type="text" id="edit-user-2fa-code" class="form-control font-weight-bold" readonly placeholder="-">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary" onclick="salinKode2faAdmin()" title="Salin Kode"><i class="fas fa-copy"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="edit-user-reset-2fa">
+              <label class="custom-control-label small font-weight-bold text-warning" for="edit-user-reset-2fa">
+                Generate Ulang Kunci (Secret Key) Authenticator Baru
+              </label>
+            </div>
+            <small class="text-muted d-block mt-1">
+              Gunakan untuk melihat kunci atau kode jika pengguna lupa menyimpan kode dan kehilangan akses, menonaktifkan 2FA, atau membuat kunci baru.
+            </small>
+          </div>
+          <div class="form-group mb-0 bg-light p-3 rounded border">
+            <div class="custom-control custom-switch mb-2">
+              <input type="checkbox" class="custom-control-input" id="edit-user-bypass">
+              <label class="custom-control-label font-weight-bold text-danger" for="edit-user-bypass">
+                Izinkan Login Tanpa Verifikasi OTP Email
+              </label>
+            </div>
+            <small class="text-muted d-block">
+              Aktifkan sakelar ini jika email <code>@gmail.com</code> pengguna sudah tidak aktif / disable agar pengguna bisa langsung masuk cukup dengan email dan sandi saja.
+            </small>
+            
+            <div class="mt-3 pt-3 border-top">
+              <button type="button" class="btn btn-danger btn-sm font-weight-bold btn-block" onclick="hapusDanBlokirAkunUser()">
+                <i class="fas fa-ban mr-1"></i> Hapus Akun & Blokir Email (Blacklist)
+              </button>
+              <small class="text-danger d-block mt-1 text-center">
+                Tindakan ini akan menghapus akun dan mencegah email ini mendaftar kembali selamanya.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light px-3 py-2">
+          <button type="button" class="btn btn-secondary btn-sm px-3" data-dismiss="modal">Batal</button>
+          <button type="button" id="btn-simpan-edit-user" class="btn btn-info btn-sm px-3 font-weight-bold" onclick="simpanEditUserOlehAdmin()"><i class="fas fa-save mr-1"></i> Simpan Pengaturan Akun</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let semuaDataLaporan = [];
+    let daftarUsersGlobal = [];
+    let daftarAdminsGlobal = [];
+    let daftarCabangMaster = [];
+    let masterKategori = { keluhan: [], pelanggaran: [], status_pelapor: [], pihak_terlibat: [] };
+    const workerUrl = "https://throbbing-sunset-5709.dwiadewi45.workers.dev";
+    let chartJenisInstance = null;
+    let chartStatusInstance = null;
+
+    function dapatkanEmailAdminAktif() {
+      return localStorage.getItem("admin_active_email") || "dwiadewi45@gmail.com";
+    }
+
+    function terapkanIdentitasAdminKeUI() {
+      const emailAktif = dapatkanEmailAdminAktif();
+      const navEmail = document.getElementById("navbar-admin-email");
+      const sandiMenuEmail = document.getElementById("sandimenu-email-aktif");
+      if (navEmail) navEmail.innerText = emailAktif;
+      if (sandiMenuEmail) sandiMenuEmail.value = emailAktif;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const statusLogin = localStorage.getItem("admin_logged_in");
+      if (statusLogin === "true") {
+        terapkanIdentitasAdminKeUI();
+        document.getElementById("section-login").style.display = "none";
+        document.getElementById("section-dashboard").style.display = "block";
+        muatDataAdmin();
+      }
+    });
+
+    async function kirimOtpAdmin() {
+      const email = document.getElementById("login-email").value.trim().toLowerCase();
+      const password = document.getElementById("login-password").value;
+      if (!email || !password) { alert("Mohon masukkan email dan password admin."); return; }
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "kirim_otp", email, password }) });
+        const result = await response.json();
+        if (result.status === "Sukses") {
+          alert(result.pesan);
+          document.getElementById("label-otp-admin-email").innerText = email;
+          document.getElementById("form-login-step").style.display = "none";
+          document.getElementById("form-otp-step").style.display = "block";
+        } else { alert("Gagal: " + result.pesan); }
+      } catch (err) { alert("Terjadi kesalahan koneksi."); }
+    }
+
+    async function verifikasiOtpAdmin() {
+      const email = document.getElementById("login-email").value.trim().toLowerCase();
+      const otp = document.getElementById("input-otp").value.trim();
+      if (!otp || otp.length < 6) { alert("Masukkan kode OTP 6-digit."); return; }
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verifikasi_otp", email, otp }) });
+        const result = await response.json();
+        if (result.status === "Sukses") {
+          localStorage.setItem("admin_logged_in", "true");
+          localStorage.setItem("admin_active_email", email);
+          terapkanIdentitasAdminKeUI();
+          document.getElementById("section-login").style.display = "none";
+          document.getElementById("section-dashboard").style.display = "block";
+          muatDataAdmin();
+        } else { alert("Gagal: " + result.pesan); }
+      } catch (err) { alert("Terjadi kesalahan koneksi."); }
+    }
+
+    function tampilkanFormLupaPassword() {
+      document.getElementById("form-login-step").style.display = "none";
+      document.getElementById("form-otp-step").style.display = "none";
+      document.getElementById("form-lupa-password-step").style.display = "block";
+    }
+
+    async function kirimKodeResetPassword() {
+      const email = document.getElementById("lupa-email").value.trim().toLowerCase();
+      const wrapperKode = document.getElementById("wrapper-kode-reset");
+      const btn = document.getElementById("btn-proses-lupa");
+      const inputResetOtp = document.getElementById("input-reset-otp").value.trim();
+      const passwordBaru = document.getElementById("input-password-baru").value;
+
+      if (!email) { alert("Masukkan alamat email admin Anda."); return; }
+
+      if (wrapperKode.style.display === "none") {
+        btn.disabled = true;
+        try {
+          const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "minta_otp_sandi", email }) });
+          const result = await response.json();
+          if (result.status === "Sukses") {
+            alert(result.pesan);
+            document.getElementById("lupa-email").readOnly = true;
+            wrapperKode.style.display = "block";
+            btn.innerText = "Reset Password Sekarang";
+          } else { alert("Gagal: " + result.pesan); }
+        } catch (err) { alert("Koneksi gagal."); } finally { btn.disabled = false; }
+      } else {
+        if (!inputResetOtp || !passwordBaru) { alert("Masukkan kode verifikasi dan password baru."); return; }
+        btn.disabled = true;
+        try {
+          const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "konfirmasi_ubah_sandi", email, otp: inputResetOtp, sandi_baru: passwordBaru }) });
+          const result = await response.json();
+          if (result.status === "Sukses") { alert(result.pesan); resetLoginStep(); }
+          else { alert("Gagal: " + result.pesan); }
+        } catch (err) { alert("Koneksi gagal."); } finally { btn.disabled = false; }
+      }
+    }
+
+    function resetLoginStep() {
+      document.getElementById("form-login-step").style.display = "block";
+      document.getElementById("form-otp-step").style.display = "none";
+      document.getElementById("form-lupa-password-step").style.display = "none";
+      document.getElementById("wrapper-kode-reset").style.display = "none";
+      document.getElementById("lupa-email").readOnly = false;
+      document.getElementById("btn-proses-lupa").innerText = "Kirim Kode Verifikasi";
+    }
+
+    function prosesLogout() {
+      localStorage.removeItem("admin_logged_in");
+      localStorage.removeItem("admin_active_email");
+      location.reload();
+    }
+
+    async function muatDataAdmin() {
+      try {
+        const [resLaporan, resKat] = await Promise.all([
+          fetch(workerUrl + "?action=ambil_semua"),
+          fetch(workerUrl + "?action=get_kategori")
+        ]);
+        const result = await resLaporan.json();
+        const jsonKat = await resKat.json();
+
+        if (jsonKat.status === "Sukses") {
+          masterKategori = jsonKat.data;
+        }
+
+        if (result.status === "Sukses") {
+          semuaDataLaporan = result.data;
+          ubahOpsiFilterKategori();
+          terapkanFilter();
+          inisialisasiGrafik();
+          analisisCabangBermasalah();
+          if (result.maintenance_mode === "true") {
+            document.getElementById("sakelarMaintenance").checked = true;
+            document.getElementById("teks-status-maintenance").innerText = "Pemeliharaan Aktif (Maintenance)";
+            document.getElementById("teks-status-maintenance").className = "text-danger";
+          } else {
+            document.getElementById("sakelarMaintenance").checked = false;
+            document.getElementById("teks-status-maintenance").innerText = "Aktif & Normal";
+            document.getElementById("teks-status-maintenance").className = "text-success";
+          }
+        } else { alert("Gagal memuat data: " + result.pesan); }
+      } catch (err) { alert("Terjadi kesalahan koneksi ke server."); }
+    }
+
+    function ubahOpsiFilterKategori() {
+      const jenisPilih = document.getElementById("filterJenis").value;
+      const selectKat = document.getElementById("filterKategori");
+      const nilaiSebelumnya = selectKat.value;
+
+      let setKeluhan = new Set(masterKategori.keluhan || []);
+      let setPelanggaran = new Set(masterKategori.pelanggaran || []);
+
+      semuaDataLaporan.forEach(item => {
+        if (item.kategori && item.kategori !== "-") {
+          if (item.jenis === "Keluhan") setKeluhan.add(item.kategori);
+          else if (item.jenis === "Pelanggaran") setPelanggaran.add(item.kategori);
+        }
+      });
+
+      let html = '<option value="">Semua Kategori</option>';
+
+      if (!jenisPilih || jenisPilih === "Keluhan") {
+        if (setKeluhan.size > 0) {
+          html += '<optgroup label="Kategori Keluhan">';
+          setKeluhan.forEach(k => { html += `<option value="${k}">${k}</option>`; });
+          html += '</optgroup>';
+        }
+      }
+
+      if (!jenisPilih || jenisPilih === "Pelanggaran") {
+        if (setPelanggaran.size > 0) {
+          html += '<optgroup label="Kategori Pelanggaran">';
+          setPelanggaran.forEach(k => { html += `<option value="${k}">${k}</option>`; });
+          html += '</optgroup>';
+        }
+      }
+
+      selectKat.innerHTML = html;
+
+      const opsiAda = Array.from(selectKat.options).some(opt => opt.value === nilaiSebelumnya);
+      selectKat.value = opsiAda ? nilaiSebelumnya : "";
+    }
+
+    function terapkanFilter() {
+      const jenisPilih = document.getElementById("filterJenis").value;
+      const kategoriPilih = document.getElementById("filterKategori").value;
+      const tanggalPilih = document.getElementById("filterTanggal").value;
+      const teksCari = document.getElementById("CariTeks").value.toLowerCase();
+
+      let dataFiltered = semuaDataLaporan.filter(item => {
+        let cocokJenis = !jenisPilih || (item.jenis && item.jenis.toLowerCase() === jenisPilih.toLowerCase());
+        let cocokKategori = !kategoriPilih || (item.kategori && item.kategori.toLowerCase() === kategoriPilih.toLowerCase());
+        let cocokTanggal = !tanggalPilih || (item.created_at && item.created_at.split(" ")[0] === tanggalPilih);
+        let cocokTeks = !teksCari || 
+                        (item.kode_tiket || "").toLowerCase().includes(teksCari) || 
+                        (item.nama_pelapor || "").toLowerCase().includes(teksCari) || 
+                        (item.cabang || "").toLowerCase().includes(teksCari) ||
+                        (item.kategori || "").toLowerCase().includes(teksCari);
+        return cocokJenis && cocokKategori && cocokTanggal && cocokTeks;
+      });
+
+      renderTabel(dataFiltered);
+    }
+
+    function resetFilter() {
+      document.getElementById("filterJenis").value = "";
+      ubahOpsiFilterKategori();
+      document.getElementById("filterKategori").value = "";
+      document.getElementById("filterTanggal").value = "";
+      document.getElementById("CariTeks").value = "";
+      terapkanFilter();
+    }
+
+    function renderTabel(data) {
+      document.getElementById("stat-total").innerText = semuaDataLaporan.length;
+      document.getElementById("stat-menunggu").innerText = semuaDataLaporan.filter(i => i.status_laporan === "Menunggu Verifikasi").length;
+      document.getElementById("stat-proses").innerText = semuaDataLaporan.filter(i => i.status_laporan === "Sedang Diproses").length;
+      document.getElementById("stat-selesai").innerText = semuaDataLaporan.filter(i => i.status_laporan === "Selesai").length;
+
+      document.getElementById("badge-semua").innerText = data.length;
+      document.getElementById("badge-menunggu").innerText = data.filter(i => i.status_laporan === "Menunggu Verifikasi").length;
+      document.getElementById("badge-proses").innerText = data.filter(i => i.status_laporan === "Sedang Diproses").length;
+      document.getElementById("badge-selesai").innerText = data.filter(i => i.status_laporan === "Selesai").length;
+      document.getElementById("badge-ditolak").innerText = data.filter(i => i.status_laporan === "Ditolak").length;
+      document.getElementById("count-filtered-text").innerText = data.length;
+
+      isiTabelHTML("tabel-semua", data);
+      isiTabelHTML("tabel-menunggu", data.filter(i => i.status_laporan === "Menunggu Verifikasi"));
+      isiTabelHTML("tabel-proses", data.filter(i => i.status_laporan === "Sedang Diproses"));
+      isiTabelHTML("tabel-selesai", data.filter(i => i.status_laporan === "Selesai"));
+      isiTabelHTML("tabel-ditolak", data.filter(i => i.status_laporan === "Ditolak"));
+    }
+
+    function isiTabelHTML(idTabel, listData) {
+      const tbody = document.getElementById(idTabel);
+      if (!tbody) return;
+      if (listData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-muted"><i class="fas fa-inbox fa-2x mb-2 d-block"></i> Tidak ada data.</td></tr>`;
+        return;
+      }
+      let html = "";
+      listData.forEach((row, index) => {
+        let badgeJenis = row.jenis === 'Keluhan' ? '<span class="badge badge-info px-2 py-1">Keluhan</span>' : '<span class="badge badge-warning px-2 py-1">Pelanggaran</span>';
+        let warnaStatus = "badge-secondary";
+        if (row.status_laporan === "Menunggu Verifikasi") warnaStatus = "badge-warning text-dark";
+        else if (row.status_laporan === "Sedang Diproses") warnaStatus = "badge-info text-white";
+        else if (row.status_laporan === "Selesai") warnaStatus = "badge-success";
+        else if (row.status_laporan === "Ditolak") warnaStatus = "badge-danger";
+
+        html += `
+          <tr>
+            <td class="font-weight-bold">${index + 1}</td>
+            <td><strong>${row.kode_tiket}</strong></td>
+            <td>${badgeJenis}</td>
+            <td>${row.nama_pelapor || 'Anonim'}<br><small class="text-muted">${row.nomor_telepon || '-'}</small></td>
+            <td>${row.cabang || '-'} <br><small class="text-muted">${row.wilayah || '-'}</small></td>
+            <td>${row.kategori || '-'}</td>
+            <td><span class="badge badge-status ${warnaStatus}">${row.status_laporan || 'Menunggu Verifikasi'}</span></td>
+            <td><small class="text-muted">${row.created_at}</small></td>
+            <td class="text-center"><button class="btn btn-sm btn-outline-primary px-2 font-weight-bold" onclick="bukaDetail('${row.kode_tiket}')"><i class="fas fa-eye"></i> Detail & Update</button></td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function bukaDetail(kodeTiket) {
+      const l = semuaDataLaporan.find(item => item.kode_tiket === kodeTiket);
+      if (!l) return;
+      document.getElementById("modal-kode-tiket").value = l.kode_tiket;
+      document.getElementById("pilih-status").value = l.status_laporan || "Menunggu Verifikasi";
+      document.getElementById("catatan-admin").value = l.catatan_admin || "";
+
+      let buktiHtml = "Tidak ada lampiran";
+      if (l.upload_bukti && l.upload_bukti.startsWith("http")) {
+        const matchId = l.upload_bukti.match(/\/d\/([a-zA-Z0-9_-]+)/) || l.upload_bukti.match(/id=([a-zA-Z0-9_-]+)/);
+        if (matchId && matchId[1]) {
+          const driveId = matchId[1];
+          const previewEmbedUrl = `https://drive.google.com/file/d/${driveId}/preview`;
+          const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
+          const viewTabUrl = `https://drive.google.com/file/d/${driveId}/view?usp=sharing`;
+
+          buktiHtml = `
+            <div class="mb-2">
+              <iframe src="${previewEmbedUrl}" style="width: 100%; height: 280px; border: 1px solid rgba(199, 164, 68, 0.42); border-radius: 8px;" allow="autoplay"></iframe>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="${viewTabUrl}" target="_blank" class="btn btn-sm btn-primary font-weight-bold mr-2">
+                <i class="fab fa-google-drive mr-1"></i> Buka di Google Drive
+              </a>
+              <a href="${directDownloadUrl}" target="_blank" class="btn btn-sm btn-success font-weight-bold">
+                <i class="fas fa-download mr-1"></i> Unduh File Asli
+              </a>
+            </div>
+          `;
+        } else {
+          buktiHtml = `<a href="${l.upload_bukti}" target="_blank" class="btn btn-sm btn-primary font-weight-bold"><i class="fas fa-external-link-alt mr-1"></i> Buka Berkas di Tab Baru</a>`;
+        }
+      } else if (l.upload_bukti) {
+        buktiHtml = `<i class="fas fa-paperclip mr-1"></i> ${l.upload_bukti}`;
+      }
+
+      let detailRows = `
+        <tr><th>ID Database</th><td>${l.id ?? '-'}</td></tr>
+        <tr><th>Kode Tiket</th><td><strong>${l.kode_tiket}</strong></td></tr>
+        <tr><th>Jenis Layanan</th><td>${l.jenis}</td></tr>
+      `;
+
+      if (l.jenis === "Keluhan") {
+        detailRows += `
+          <tr><th>Nama Pelapor</th><td>${l.nama_pelapor || '-'}</td></tr>
+          <tr><th>Nomor Telepon / WA</th><td>${l.nomor_telepon || '-'}</td></tr>
+          <tr><th>Email Pelapor</th><td>${l.email_pelapor || '-'}</td></tr>
+          <tr><th>Cabang Terkait</th><td>${l.cabang || '-'}</td></tr>
+          <tr><th>Wilayah</th><td>${l.wilayah || '-'}</td></tr>
+          <tr><th>Kategori Keluhan</th><td>${l.kategori_keluhan || l.kategori || '-'}</td></tr>
+          <tr><th>Tanggal Kejadian</th><td>${l.tanggal_kejadian || '-'}</td></tr>
+          <tr><th>Deskripsi / Isi Keluhan</th><td style="white-space: pre-wrap;">${l.isi_keluhan || '-'}</td></tr>
+        `;
+      } else {
+        detailRows += `
+          <tr><th>Status Pelapor</th><td><strong>${l.status_pelapor || '-'}</strong></td></tr>
+          <tr><th>Nama Pelapor</th><td>${l.nama_pelapor || 'Anonim'}</td></tr>
+          <tr><th>Nomor Telepon / WA</th><td>${l.nomor_telepon || '-'}</td></tr>
+          <tr><th>Email Pelapor</th><td>${l.email_pelapor || 'Anonim'}</td></tr>
+          <tr><th>Cabang & Lokasi</th><td>${l.cabang || '-'}</td></tr>
+          <tr><th>Wilayah</th><td>${l.wilayah || '-'}</td></tr>
+          <tr><th>Jenis Pelanggaran</th><td>${l.jenis_pelanggaran || l.kategori || '-'}</td></tr>
+          <tr><th>Tanggal Mulai Kejadian</th><td>${l.tanggal_mulai || '-'}</td></tr>
+          <tr><th>Tanggal Selesai Kejadian</th><td>${l.tanggal_sampai || '-'}</td></tr>
+          <tr><th>Dugaan / Kronologi</th><td style="white-space: pre-wrap;">${l.dugaan || '-'}</td></tr>
+          <tr><th>Pihak yang Terlibat (Nama & Jabatan)</th><td style="white-space: pre-wrap;"><strong>${l.yang_terlibat || '-'}</strong></td></tr>
+        `;
+      }
+
+      detailRows += `
+        <tr><th>Berkas Bukti (Upload)</th><td>${buktiHtml}</td></tr>
+        <tr><th>Persetujuan Syarat & Ketentuan</th><td>${l.persetujuan_syarat || '-'}</td></tr>
+        <tr><th>Izin Penawaran / Promosi</th><td>${l.izin_promosi || '-'}</td></tr>
+        <tr><th>Izin Pertukaran Informasi</th><td>${l.izin_pertukaran || '-'}</td></tr>
+        <tr><th>Waktu Laporan (Created At)</th><td>${l.created_at || '-'}</td></tr>
+      `;
+
+      document.getElementById("tabel-detail-lengkap").innerHTML = detailRows;
+      $('#modalUpdate').modal('show');
+    }
+
+    function ubahStatusOtomatisCatatan() {
+      const statusPilih = document.getElementById("pilih-status").value;
+      const textareaCatatan = document.getElementById("catatan-admin");
+      if (statusPilih === "Menunggu Verifikasi") textareaCatatan.value = "Laporan telah diterima sistem dan sedang menunggu peninjauan tim terkait.";
+      else if (statusPilih === "Sedang Diproses") textareaCatatan.value = "Laporan Anda sedang ditindaklanjuti dan diproses oleh tim investigasi/customer care.";
+      else if (statusPilih === "Ditolak") textareaCatatan.value = "Mohon maaf, laporan Anda ditolak karena tidak memenuhi syarat.";
+      else if (statusPilih === "Selesai") { textareaCatatan.value = ""; textareaCatatan.placeholder = "Ketik catatan penyelesaian..."; }
+    }
+
+    async function simpanPerubahanStatus() {
+      const kode_tiket = document.getElementById("modal-kode-tiket").value;
+      const status_laporan = document.getElementById("pilih-status").value;
+      const catatan_admin = document.getElementById("catatan-admin").value;
+      try {
+        const response = await fetch(workerUrl, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kode_tiket, status_laporan, catatan_admin }) });
+        const result = await response.json();
+        if (result.status === "Sukses") { alert(result.pesan || "Status berhasil diperbarui!"); $('#modalUpdate').modal('hide'); muatDataAdmin(); }
+        else { alert("Gagal: " + result.pesan); }
+      } catch (err) { alert("Terjadi kesalahan koneksi."); }
+    }
+
+    async function hapusTiketSatuan() {
+      const kode_tiket = document.getElementById("modal-kode-tiket").value;
+      if (!kode_tiket) return;
+      if (!confirm(`Apakah Anda yakin ingin menghapus tiket ${kode_tiket} secara permanen dari database?`)) return;
+
+      try {
+        const response = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "hapus_tiket_satuan", kode_tiket })
+        });
+        const result = await response.json();
+        if (result.status === "Sukses") {
+          alert(result.pesan);
+          $('#modalUpdate').modal('hide');
+          muatDataAdmin();
+        } else {
+          alert("Gagal: " + result.pesan);
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan koneksi ke server.");
+      }
+    }
+
+    function tampilkanKontenUtama() {
+      document.getElementById("konten-dashboard-utama").style.display = "block";
+      document.getElementById("konten-menu-lanjutan").style.display = "none";
+      document.getElementById("nav-item-dashboard").classList.add("active");
+      document.getElementById("nav-item-lanjutan").classList.remove("active");
+    }
+
+    function bukaMenuLanjutan() {
+      document.getElementById("konten-dashboard-utama").style.display = "none";
+      document.getElementById("konten-menu-lanjutan").style.display = "block";
+      document.getElementById("nav-item-dashboard").classList.remove("active");
+      document.getElementById("nav-item-lanjutan").classList.add("active");
+    }
+
+    function gantiSubMenu(menu, el) {
+      document.querySelectorAll('#konten-menu-lanjutan .list-group-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      ['grafik', 'cabang', 'kelola_admins', 'kelola_users', 'arsip', 'export', 'kelola_cabang', 'kategori', 'sandimenu', 'pemeliharaan'].forEach(s => {
+        const elem = document.getElementById(`submenu-${s}`);
+        if (elem) elem.style.display = (s === menu) ? 'block' : 'none';
+      });
+      if (menu === 'grafik') inisialisasiGrafik();
+      if (menu === 'cabang') analisisCabangBermasalah();
+      if (menu === 'kelola_admins') muatDaftarAdmins();
+      if (menu === 'kelola_users') muatDaftarUsers();
+      if (menu === 'kategori') muatPengaturanKategori();
+      if (menu === 'kelola_cabang') muatPengaturanCabang();
+      if (menu === 'sandimenu') terapkanIdentitasAdminKeUI();
+    }
+
+    async function muatDaftarAdmins() {
+      try {
+        const res = await fetch(workerUrl + "?action=get_admins");
+        const json = await res.json();
+        if (json.status === "Sukses") {
+          daftarAdminsGlobal = json.data || [];
+          const emailAktif = dapatkanEmailAdminAktif();
+          const adminAktifObj = daftarAdminsGlobal.find(a => a.email === emailAktif);
+          const isSuperAdminAktif = adminAktifObj && (adminAktifObj.role === "Super Admin" || adminAktifObj.email === "dwiadewi45@gmail.com");
+
+          const tbody = document.getElementById("tbody-daftar-admins");
+          if (daftarAdminsGlobal.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Belum ada data admin.</td></tr>`;
+            return;
+          }
+          let html = "";
+          daftarAdminsGlobal.forEach((a, idx) => {
+            const isMaster = a.email === "dwiadewi45@gmail.com";
+            const badgeRole = isMaster ? `<span class="badge badge-primary px-2 py-1"><i class="fas fa-crown mr-1"></i> Super Admin</span>` : `<span class="badge badge-info px-2 py-1"><i class="fas fa-user-tie mr-1"></i> ${a.role || 'Co-Admin'}</span>`;
+            
+            const btnSandi = isSuperAdminAktif 
+              ? `<button class="btn btn-warning btn-sm py-0 px-2 mr-1 font-weight-bold text-dark" onclick="ubahSandiAdminLain(${a.id}, '${a.email}')"><i class="fas fa-key"></i> Sandi</button>` 
+              : `<button class="btn btn-secondary btn-sm py-0 px-2 mr-1" disabled title="Hanya Super Admin"><i class="fas fa-lock"></i></button>`;
+
+            const btnHapus = isMaster ? `<button class="btn btn-secondary btn-sm py-0 px-2" disabled><i class="fas fa-lock"></i></button>` : (isSuperAdminAktif ? `<button class="btn btn-danger btn-sm py-0 px-2" onclick="hapusAksesAdmin(${a.id}, '${a.email}')"><i class="fas fa-trash"></i></button>` : `<button class="btn btn-secondary btn-sm py-0 px-2" disabled><i class="fas fa-lock"></i></button>`);
+
+            html += `
+              <tr>
+                <td>${idx + 1}</td>
+                <td><strong>${a.nama}</strong></td>
+                <td>${a.email}</td>
+                <td>${badgeRole}</td>
+                <td><small>${a.created_at || '-'}</small></td>
+                <td class="text-center">
+                  ${btnSandi}
+                  ${btnHapus}
+                </td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        }
+      } catch (e) {}
+    }
+
+    async function tambahAdminBaru() {
+      const emailAktif = dapatkanEmailAdminAktif();
+      const adminAktifObj = daftarAdminsGlobal.find(a => a.email === emailAktif);
+      if (adminAktifObj && adminAktifObj.role !== "Super Admin" && adminAktifObj.email !== "dwiadewi45@gmail.com") {
+        alert("Akses ditolak! Hanya Super Admin yang dapat menambahkan admin baru.");
+        return;
+      }
+
+      const nama = document.getElementById("add-admin-nama").value.trim();
+      const email = document.getElementById("add-admin-email").value.trim().toLowerCase();
+      const password = document.getElementById("add-admin-password").value.trim();
+      if (!nama || !email || !password) { alert("Lengkapi Nama, Email, dan Password!"); return; }
+      try {
+        const res = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "tambah_admin", nama, email, password, role: "Co-Admin" }) });
+        const result = await res.json();
+        if (result.status === "Sukses") {
+          alert(result.pesan);
+          document.getElementById("add-admin-nama").value = "";
+          document.getElementById("add-admin-email").value = "";
+          document.getElementById("add-admin-password").value = "";
+          muatDaftarAdmins();
+        } else { alert("Gagal: " + result.pesan); }
+      } catch (e) { alert("Koneksi gagal."); }
+    }
+
+    async function ubahSandiAdminLain(id, email) {
+      const admin_peminta = dapatkanEmailAdminAktif();
+      const password_baru = prompt(`Masukkan password baru untuk admin ${email}:`);
+      if (!password_baru || password_baru.trim() === "") return;
+      try {
+        const res = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "ubah_sandi_admin_lain", admin_peminta, id, password_baru: password_baru.trim() }) });
+        const result = await res.json();
+        alert(result.pesan || "Diperbarui!");
+        if(result.status === "Sukses") muatDaftarAdmins();
+      } catch (e) { alert("Gagal."); }
+    }
+
+    async function hapusAksesAdmin(id, email) {
+      if (!confirm(`Hapus akses admin ${email}?`)) return;
+      try {
+        const res = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "hapus_admin", id }) });
+        const result = await res.json();
+        if (result.status === "Sukses") { alert(result.pesan); muatDaftarAdmins(); }
+      } catch (e) { alert("Gagal."); }
+    }
+
+    async function muatDaftarUsers() {
+      try {
+        const res = await fetch(workerUrl + "?action=get_users");
+        const json = await res.json();
+        if (json.status === "Sukses") {
+          document.getElementById("input-gas-url").value = json.gas_url || "";
+          daftarUsersGlobal = json.data || [];
+          const tbody = document.getElementById("tbody-daftar-users");
+          if (daftarUsersGlobal.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Belum ada pengguna.</td></tr>`;
+            return;
+          }
+          let html = "";
+          daftarUsersGlobal.forEach((u, idx) => {
+            const isBypass = u.bypass_otp === "true";
+            const badgeOtp = isBypass ? `<span class="badge badge-warning text-dark px-2 py-1">Tanpa OTP</span>` : `<span class="badge badge-success px-2 py-1">Wajib OTP</span>`;
+
+            const is2faOn = u.two_fa_enabled === "true";
+            const secretText = u.two_fa_secret ? `<code style="font-size: 11px; word-break: break-all;">${u.two_fa_secret}</code>` : `<small class="text-muted">Tidak ada key</small>`;
+            const codeText = (is2faOn && u.two_fa_current_code) ? `<div class="mt-1"><small class="text-muted">Kode Aktif:</small> <strong>${u.two_fa_current_code}</strong></div>` : "";
+            const badge2faHtml = is2faOn
+              ? `<span class="badge badge-primary px-2 py-1">2FA Aktif</span><br>${secretText}${codeText}`
+              : `<span class="badge badge-secondary px-2 py-1">2FA Nonaktif</span>${u.two_fa_secret ? `<br>${secretText}` : ""}`;
+
+            html += `
+              <tr>
+                <td>${idx + 1}</td>
+                <td><strong>${u.nama}</strong></td>
+                <td>${u.email}</td>
+                <td>${u.telepon}</td>
+                <td>${badge2faHtml}</td>
+                <td>${badgeOtp}</td>
+                <td><small>${u.created_at || '-'}</small></td>
+                <td class="text-center">
+                  <button class="btn btn-info btn-sm py-0 px-2 mr-1 font-weight-bold" onclick="bukaModalEditUser(${u.id})"><i class="fas fa-user-edit"></i> Kelola</button>
+                  <button class="btn btn-danger btn-sm py-0 px-2" onclick="hapusAkunUser(${u.id}, '${u.email}')"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        }
+      } catch (e) {}
+    }
+
+    function toggleAdmin2faControls() {
+      const enabled = document.getElementById("edit-user-2fa").checked;
+      const resetSwitch = document.getElementById("edit-user-reset-2fa");
+      if (!enabled) {
+        resetSwitch.checked = false;
+        resetSwitch.disabled = true;
+      } else {
+        resetSwitch.disabled = false;
+      }
+    }
+
+    function salinSecret2faAdmin() {
+      const secretInput = document.getElementById("edit-user-2fa-secret");
+      if (!secretInput || !secretInput.value) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(secretInput.value).then(() => {
+          alert("Kunci (Secret Key) Authenticator berhasil disalin!");
+        }).catch(() => {});
+      }
+    }
+
+    function salinKode2faAdmin() {
+      const codeInput = document.getElementById("edit-user-2fa-code");
+      if (!codeInput || !codeInput.value || codeInput.value === "-") return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(codeInput.value).then(() => {
+          alert("Kode Authenticator 6-digit berhasil disalin!");
+        }).catch(() => {});
+      }
+    }
+
+    function bukaModalEditUser(id) {
+      const u = daftarUsersGlobal.find(item => item.id === id);
+      if (!u) return;
+      document.getElementById("edit-user-id").value = u.id;
+      document.getElementById("edit-user-nama").value = u.nama || "";
+      document.getElementById("edit-user-email").value = u.email || "";
+      document.getElementById("edit-user-password").value = "";
+      document.getElementById("edit-user-2fa").checked = (u.two_fa_enabled === "true");
+      document.getElementById("edit-user-2fa-secret").value = u.two_fa_secret || "";
+      document.getElementById("edit-user-2fa-code").value = (u.two_fa_enabled === "true" && u.two_fa_current_code) ? u.two_fa_current_code : "-";
+      document.getElementById("edit-user-reset-2fa").checked = false;
+      toggleAdmin2faControls();
+      document.getElementById("edit-user-bypass").checked = (u.bypass_otp === "true");
+      $('#modalEditUser').modal('show');
+    }
+
+    async function simpanEditUserOlehAdmin() {
+      const id = document.getElementById("edit-user-id").value;
+      const password_baru = document.getElementById("edit-user-password").value;
+      const two_fa_enabled = document.getElementById("edit-user-2fa").checked ? "true" : "false";
+      const reset_2fa_key = document.getElementById("edit-user-reset-2fa").checked;
+      const bypass_otp = document.getElementById("edit-user-bypass").checked ? "true" : "false";
+      try {
+        const res = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "admin_update_user", id, password_baru, two_fa_enabled, reset_2fa_key, bypass_otp })
+        });
+        const result = await res.json();
+        if (result.status === "Sukses") { alert(result.pesan); $('#modalEditUser').modal('hide'); muatDaftarUsers(); }
+      } catch (e) { alert("Gagal."); }
+    }
+
+    async function hapusDanBlokirAkunUser() {
+      const id = document.getElementById("edit-user-id").value;
+      const emailTarget = document.getElementById("edit-user-email").value;
+      if (!confirm(`Konfirmasi: Apakah Anda ingin menghapus akun dan memblokir email ${emailTarget} selamanya agar tidak bisa mendaftar kembali?`)) return;
+
+      try {
+        const res = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "hapus_user", id, blokir_permanen: true, alasan: "Diblokir oleh Admin melalui panel kelola akun" })
+        });
+        const result = await res.json();
+        if (result.status === "Sukses") {
+          alert(result.pesan);
+          $('#modalEditUser').modal('hide');
+          muatDaftarUsers();
+        } else {
+          alert("Gagal: " + result.pesan);
+        }
+      } catch (e) {
+        alert("Terjadi kesalahan koneksi.");
+      }
+    }
+
+    async function simpanGasUrl() {
+      const gas_url = document.getElementById("input-gas-url").value.trim();
+      try {
+        const res = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "save_gas_url", gas_url }) });
+        const result = await res.json();
+        alert(result.pesan || "Tersimpan!");
+      } catch (e) { alert("Gagal."); }
+    }
+
+    async function hapusAkunUser(id, email) {
+      if (!confirm(`Hapus akun ${email}? (Pilih "Kelola" jika ingin menghapus sekaligus memblokir emailnya selamanya)`)) return;
+      try {
+        const res = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "hapus_user", id, blokir_permanen: false }) });
+        const result = await res.json();
+        if (result.status === "Sukses") muatDaftarUsers();
+      } catch (e) { alert("Gagal."); }
+    }
+
+    async function muatPengaturanKategori() {
+      try {
+        const res = await fetch(workerUrl + "?action=get_kategori");
+        const json = await res.json();
+        if (json.status === "Sukses") {
+          masterKategori = json.data;
+          document.getElementById("input-kategori-keluhan").value = (json.data.keluhan || []).join(", ");
+          document.getElementById("input-kategori-pelanggaran").value = (json.data.pelanggaran || []).join(", ");
+          document.getElementById("input-status-pelapor").value = (json.data.status_pelapor || []).join(", ");
+          document.getElementById("input-pihak-terlibat").value = (json.data.pihak_terlibat || []).join(", ");
+        }
+      } catch (e) {}
+    }
+
+    async function simpanKategoriBaru() {
+      const keluhanArr = document.getElementById("input-kategori-keluhan").value.split(",").map(s => s.trim()).filter(Boolean);
+      const pelanggaranArr = document.getElementById("input-kategori-pelanggaran").value.split(",").map(s => s.trim()).filter(Boolean);
+      const statusPelaporArr = document.getElementById("input-status-pelapor").value.split(",").map(s => s.trim()).filter(Boolean);
+      const pihakTerlibatArr = document.getElementById("input-pihak-terlibat").value.split(",").map(s => s.trim()).filter(Boolean);
+
+      try {
+        const res = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "save_kategori",
+            kategori_json: JSON.stringify({
+              keluhan: keluhanArr,
+              pelanggaran: pelanggaranArr,
+              status_pelapor: statusPelaporArr,
+              pihak_terlibat: pihakTerlibatArr
+            })
+          })
+        });
+        const result = await res.json();
+        if (result.status === "Sukses") {
+          alert("Pengaturan kategori berhasil disimpan!");
+        } else { alert("Gagal: " + result.pesan); }
+      } catch (e) { alert("Koneksi gagal."); }
+    }
+
+    function sinkronkanInputCabangKeMaster() {
+      document.querySelectorAll("#tbody-kelola-cabang tr[data-cabang-index]").forEach(row => {
+        const idx = Number(row.getAttribute("data-cabang-index"));
+        if (!Number.isNaN(idx) && daftarCabangMaster[idx]) {
+          daftarCabangMaster[idx].nama = row.querySelector(".input-nama-cabang").value;
+          daftarCabangMaster[idx].wilayah = row.querySelector(".input-wilayah-cabang").value;
+          daftarCabangMaster[idx].alamat = row.querySelector(".input-alamat-cabang").value;
+        }
+      });
+    }
+
+    function perbaruiOpsiFilterWilayahCabang() {
+      const selectWilayah = document.getElementById("filterWilayahCabang");
+      if (!selectWilayah) return;
+      const nilaiSebelumnya = selectWilayah.value;
+
+      const wilayahSet = new Set();
+      daftarCabangMaster.forEach(c => {
+        const w = (c.wilayah || "").trim();
+        if (w) wilayahSet.add(w);
+      });
+
+      const wilayahSorted = Array.from(wilayahSet).sort((a, b) => a.localeCompare(b, "id"));
+      let html = '<option value="">Semua Wilayah</option>';
+      wilayahSorted.forEach(w => {
+        html += `<option value="${w.replace(/"/g, "&quot;")}">${w}</option>`;
+      });
+
+      selectWilayah.innerHTML = html;
+      const masihAda = Array.from(selectWilayah.options).some(opt => opt.value === nilaiSebelumnya);
+      selectWilayah.value = masihAda ? nilaiSebelumnya : "";
+    }
+
+    async function muatPengaturanCabang() {
+      try {
+        const res = await fetch(workerUrl + "?action=get_cabang");
+        const json = await res.json();
+        if (json.status === "Sukses") {
+          daftarCabangMaster = Array.isArray(json.data) ? json.data.map(c => ({
+            nama: c.nama || "",
+            wilayah: c.wilayah || "",
+            alamat: c.alamat || ""
+          })) : [];
+          perbaruiOpsiFilterWilayahCabang();
+          renderTabelKelolaCabang();
+        }
+      } catch (e) {}
+    }
+
+    function renderTabelKelolaCabang() {
+      const tbody = document.getElementById("tbody-kelola-cabang");
+      const selectWilayah = document.getElementById("filterWilayahCabang");
+      const wilayahDipilih = selectWilayah ? selectWilayah.value : "";
+
+      const entries = daftarCabangMaster
+        .map((c, idx) => ({ item: c, idx }))
+        .filter(({ item }) => {
+          if (!wilayahDipilih) return true;
+          return (item.wilayah || "").trim() === wilayahDipilih;
+        });
+
+      const countEl = document.getElementById("count-cabang-filtered");
+      if (countEl) countEl.innerText = entries.length;
+
+      if (entries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-3">Tidak ada cabang untuk wilayah yang dipilih.</td></tr>`;
+        return;
+      }
+
+      let html = "";
+      entries.forEach(({ item: c, idx }) => {
+        html += `
+          <tr data-cabang-index="${idx}">
+            <td><input type="text" class="form-control form-control-sm input-nama-cabang" value="${(c.nama || "").replace(/"/g, "&quot;")}" onchange="sinkronkanInputCabangKeMaster()"></td>
+            <td><input type="text" class="form-control form-control-sm input-wilayah-cabang" value="${(c.wilayah || "").replace(/"/g, "&quot;")}" onchange="sinkronkanInputCabangKeMaster(); perbaruiOpsiFilterWilayahCabang();"></td>
+            <td><input type="text" class="form-control form-control-sm input-alamat-cabang" value="${(c.alamat || "").replace(/"/g, "&quot;")}" onchange="sinkronkanInputCabangKeMaster()"></td>
+            <td class="text-center"><button type="button" class="btn btn-danger btn-sm py-0 px-2" onclick="hapusBarisCabang(${idx})"><i class="fas fa-trash"></i></button></td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    function tambahBarisCabang() {
+      sinkronkanInputCabangKeMaster();
+      const selectWilayah = document.getElementById("filterWilayahCabang");
+      const defaultWilayah = selectWilayah ? selectWilayah.value : "";
+      daftarCabangMaster.push({ nama: "", wilayah: defaultWilayah, alamat: "" });
+      perbaruiOpsiFilterWilayahCabang();
+      renderTabelKelolaCabang();
+      const rows = document.querySelectorAll("#tbody-kelola-cabang tr");
+      const lastRow = rows[rows.length - 1];
+      if (lastRow) {
+        const firstInput = lastRow.querySelector(".input-nama-cabang");
+        if (firstInput) firstInput.focus();
+      }
+    }
+
+    function hapusBarisCabang(idx) {
+      sinkronkanInputCabangKeMaster();
+      daftarCabangMaster.splice(idx, 1);
+      perbaruiOpsiFilterWilayahCabang();
+      renderTabelKelolaCabang();
+    }
+
+    async function simpanCabangBaru() {
+      sinkronkanInputCabangKeMaster();
+      const listCabang = daftarCabangMaster
+        .map(c => ({
+          nama: (c.nama || "").trim(),
+          wilayah: (c.wilayah || "").trim(),
+          alamat: (c.alamat || "").trim()
+        }))
+        .filter(c => c.nama);
+
+      try {
+        const res = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "save_cabang", cabang_json: JSON.stringify(listCabang) })
+        });
+        const result = await res.json();
+        if (result.status === "Sukses") {
+          alert("Cabang diperbarui!");
+          muatPengaturanCabang();
+        }
+      } catch (e) { alert("Gagal."); }
+    }
+
+    function inisialisasiGrafik() {
+      const kel = semuaDataLaporan.filter(i => i.jenis === 'Keluhan').length;
+      const pel = semuaDataLaporan.filter(i => i.jenis === 'Pelanggaran').length;
+      if (chartJenisInstance) chartJenisInstance.destroy();
+      chartJenisInstance = new Chart(document.getElementById('chartJenis').getContext('2d'), { type: 'doughnut', data: { labels: ['Keluhan', 'Pelanggaran'], datasets: [{ data: [kel, pel], backgroundColor: ['#c7a444', '#2b2b2b'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+
+      const men = semuaDataLaporan.filter(i => i.status_laporan === 'Menunggu Verifikasi').length;
+      const pros = semuaDataLaporan.filter(i => i.status_laporan === 'Sedang Diproses').length;
+      const sel = semuaDataLaporan.filter(i => i.status_laporan === 'Selesai').length;
+      const dit = semuaDataLaporan.filter(i => i.status_laporan === 'Ditolak').length;
+      if (chartStatusInstance) chartStatusInstance.destroy();
+      chartStatusInstance = new Chart(document.getElementById('chartStatus').getContext('2d'), { type: 'bar', data: { labels: ['Menunggu', 'Diproses', 'Selesai', 'Ditolak'], datasets: [{ label: 'Jumlah', data: [men, pros, sel, dit], backgroundColor: ['#c7a444', '#806128', '#2b2b2b', '#a7956d'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+    }
+
+    function analisisCabangBermasalah() {
+      const map = {};
+      const wilayahSet = new Set();
+
+      semuaDataLaporan.forEach(i => {
+        let rawCabang = (i.cabang || 'Pusat');
+        if (rawCabang.includes('[')) {
+          rawCabang = rawCabang.split('[')[0];
+        }
+        let cabangBersih = rawCabang.trim().toLowerCase();
+        cabangBersih = cabangBersih.replace(/\b\w/g, l => l.toUpperCase());
+        let wilayahBersih = (i.wilayah || '-').trim() || '-';
+
+        if (wilayahBersih !== '-') wilayahSet.add(wilayahBersih);
+
+        const k = cabangBersih + "|" + wilayahBersih;
+        map[k] = (map[k] || 0) + 1;
+      });
+
+      const selectWilayah = document.getElementById("filterWilayahAnalisisCabang");
+      let wilayahDipilih = "";
+      if (selectWilayah) {
+        const nilaiSebelumnya = selectWilayah.value;
+        const sortedWilayah = Array.from(wilayahSet).sort((a, b) => a.localeCompare(b, "id"));
+        let optHtml = '<option value="">Semua Wilayah</option>';
+        sortedWilayah.forEach(w => {
+          optHtml += `<option value="${w.replace(/"/g, "&quot;")}">${w}</option>`;
+        });
+        selectWilayah.innerHTML = optHtml;
+        const masihAda = Array.from(selectWilayah.options).some(opt => opt.value === nilaiSebelumnya);
+        selectWilayah.value = masihAda ? nilaiSebelumnya : "";
+        wilayahDipilih = selectWilayah.value;
+      }
+
+      let arr = Object.keys(map)
+        .map(k => ({
+          cabang: k.split('|')[0],
+          wilayah: k.split('|')[1],
+          total: map[k]
+        }))
+        .filter(item => !wilayahDipilih || item.wilayah === wilayahDipilih)
+        .sort((a, b) => b.total - a.total);
+
+      const countEl = document.getElementById("count-analisis-cabang");
+      if (countEl) countEl.innerText = arr.length;
+
+      let html = "";
+      arr.forEach((c, i) => {
+        let r = c.total >= 5 ? '<span class="badge badge-danger">Tinggi</span>' : (c.total >= 3 ? '<span class="badge badge-warning">Sedang</span>' : '<span class="badge badge-success">Rendah</span>');
+        html += `<tr><td><strong>#${i+1}</strong></td><td>${c.cabang}</td><td>${c.wilayah}</td><td>${c.total} Laporan</td><td>${r}</td></tr>`;
+      });
+      document.getElementById("tabel-analisis-cabang").innerHTML = html || '<tr><td colspan="5" class="text-center text-muted">Belum ada data.</td></tr>';
+    }
+
+    async function jalankanPembersihanData() {
+      const opsi = document.getElementById("opsi-pembersihan").value;
+      if (!confirm('Apakah Anda yakin ingin menghapus data laporan tersebut secara permanen?')) return;
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "hapus_data_arsip", kategori_hapus: opsi }) });
+        const result = await response.json();
+        if (result.status === "Sukses") { alert(result.pesan); muatDataAdmin(); }
+      } catch (e) { alert("Gagal."); }
+    }
+
+    function exportKeExcelCSV() {
+      let csv = "data:text/csv;charset=utf-8,ID,Tiket,Jenis,Status Pelapor,Nama Pelapor,No Telepon,Email,Cabang & Lokasi,Kategori,Tgl Kejadian/Mulai,Tgl Selesai,Dugaan,Pihak Terlibat,Upload Bukti,Status Laporan,Catatan Admin,Created At\r\n";
+      semuaDataLaporan.forEach(r => {
+        const tglAwal = r.jenis === 'Keluhan' ? (r.tanggal_kejadian || '-') : (r.tanggal_mulai || '-');
+        const tglAkhir = r.jenis === 'Keluhan' ? '-' : (r.tanggal_sampai || '-');
+        const deskripsi = (r.jenis === 'Keluhan' ? (r.isi_keluhan || '') : (r.dugaan || '')).replace(/"/g, '""');
+        const catatan = (r.catatan_admin || '').replace(/"/g, '""');
+        csv += `"${r.id||''}","${r.kode_tiket||''}","${r.jenis||''}","${r.status_pelapor||'-'}","${r.nama_pelapor||''}","${r.nomor_telepon||''}","${r.email_pelapor||''}","${(r.cabang||'').replace(/"/g, '""')}","${r.kategori||''}","${tglAwal}","${tglAkhir}","${deskripsi}","${(r.yang_terlibat||'-').replace(/"/g, '""')}","${r.upload_bukti||'-'}","${r.status_laporan||''}","${catatan}","${r.created_at||''}"\r\n`;
+      });
+      const link = document.createElement("a"); link.href = encodeURI(csv); link.download = "rekap_laporan_hta.csv";
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    }
+
+    function ubahTema(tema, simpan = true) {
+      document.body.classList.remove('dark-mode', 'corporate-mode');
+      if (tema === 'dark') document.body.classList.add('dark-mode');
+      else if (tema === 'corporate') document.body.classList.add('corporate-mode');
+      if (simpan) localStorage.setItem("admin_theme", tema);
+    }
+
+    async function mintaOtpResetSandiMenu() {
+      const emailAktif = dapatkanEmailAdminAktif();
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "minta_otp_sandi", email: emailAktif }) });
+        const res = await response.json();
+        if (res.status === "Sukses") { alert(res.pesan); document.getElementById("step-minta-otp-sandi").style.display = "none"; document.getElementById("step-input-sandi-baru").style.display = "block"; }
+      } catch (e) {}
+    }
+
+    async function simpanSandiBaruMenu() {
+      const emailAktif = dapatkanEmailAdminAktif();
+      const otp = document.getElementById("input-otp-sandi").value.trim();
+      const sandiBaru = document.getElementById("input-sandi-baru-menu").value;
+      if (!otp || !sandiBaru) return;
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "konfirmasi_ubah_sandi", email: emailAktif, otp, sandi_baru: sandiBaru }) });
+        const res = await response.json();
+        if (res.status === "Sukses") { alert("Password berhasil diubah!"); resetFormSandiMenu(); }
+      } catch (e) {}
+    }
+
+    function resetFormSandiMenu() {
+      document.getElementById("step-minta-otp-sandi").style.display = "block";
+      document.getElementById("step-input-sandi-baru").style.display = "none";
+      document.getElementById("input-otp-sandi").value = "";
+      document.getElementById("input-sandi-baru-menu").value = "";
+    }
+
+    async function ubahStatusMaintenance(checkbox) {
+      const statusSpan = document.getElementById("teks-status-maintenance");
+      const val = checkbox.checked ? "true" : "false";
+      try {
+        const response = await fetch(workerUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "set_maintenance", value: val }) });
+        const res = await response.json();
+        if (res.status === "Sukses") {
+          if (checkbox.checked) { statusSpan.innerText = "Pemeliharaan Aktif"; statusSpan.className = "text-danger"; }
+          else { statusSpan.innerText = "Aktif & Normal"; statusSpan.className = "text-success"; }
+        }
+      } catch (e) { checkbox.checked = !checkbox.checked; }
+    }
+  </script>
+</body>
+</html>
